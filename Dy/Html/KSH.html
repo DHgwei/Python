@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毕业生就业数据可视化</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #00aaff, #2e6fdb);
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        header nav ul li {
+            display: inline;
+            margin: 0 20px;
+        }
+
+        header nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        header nav ul li a:hover {
+            text-decoration: underline;
+            color: #f3a7a2;
+        }
+
+        section {
+            padding: 4rem 2rem;
+            margin: 2rem auto;
+            width: 85%;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .overview {
+            text-align: center;
+            background-color: #f0f4f8;
+            padding: 3rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .overview p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .card {
+            display: inline-block;
+            width: 30%;
+            margin: 1.5rem;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #0077b6;
+        }
+
+        .card p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 0.9rem;
+        }
+
+        footer p {
+            margin: 0;
+        }
+        /* 弹出框的样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 1200px;
+            height: 70%;
+            overflow: hidden;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .card {
+                width: 45%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                width: 100%;
+            }
+
+            header nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            header nav ul {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!--    <header>-->
+<!--        <nav>-->
+<!--            <ul>-->
+<!--                <li><a href="#">首页</a></li>-->
+<!--                <li><a href="#">招聘数据</a></li>-->
+<!--                <li><a href="#">毕业生看法</a></li>-->
+<!--                <li><a href="#">政府数据</a></li>-->
+<!--                <li><a href="#">联系我们</a></li>-->
+<!--            </ul>-->
+<!--        </nav>-->
+<!--    </header>-->
+
+    <section class="overview">
+        <h1>毕业生就业数据概览</h1>
+        <p>探索各类就业数据，了解薪资水平、地区需求、学历要求等，助你更好地规划职业发展。</p>
+    </section>
+
+    <section id="recruitment-data">
+        <h2>招聘网站</h2>
+        <div class="card" onclick="openModal('modalChart1')">
+            <h3>就业薪资分布</h3>
+            <p>薪资数据概览：根据招聘网站统计的薪资分布，了解不同薪资区间的岗位需求。</p>
+        </div>
+        <div class="card" onclick="openModal('modalChart2')">
+            <h3>就业地区分布</h3>
+            <p>地区数据概览：展示全国各地的就业机会分布，帮助你选择就业城市。</p>
+        </div>
+        <div class="card" onclick="openModal('modalChart3')">
+            <h3>学历要求分布</h3>
+            <p>学历要求：分析不同岗位对学历的要求，了解哪些职位适合你。</p>
+        </div>
+    </section>
+
+
+    <section id="graduate-opinion">
+        <h2>毕业生看法</h2>
+        <div class="card" onclick="openModal('modalChart4')">
+            <h3>1</h3>
+            <p>毕业生对薪资的期望分布，帮助你设定自己的薪资目标。</p>
+        </div>
+        <div class="card" onclick="openModal('modalChart5')">
+            <h3>2</h3>
+            <p>展示毕业生对就业市场的压力感知，分析当前就业环境。</p>
+        </div>
+         <div class="card" onclick="openModal('modalChart6')">
+            <h3>3</h3>
+            <p>毕业生对薪资的期望分布，帮助你设定自己的薪资目标。</p>
+        </div>
+    </section>
+
+    <section id="government-data">
+        <h2>政府公布</h2>
+        <div class="card" onclick="openModal('modalChart7')">
+            <h3>就业数据</h3>
+            <p>跟踪全国就业率的变化趋势，了解就业市场的走势。</p>
+        </div>
+        <div class="card" onclick="openModal('modalChart8')">
+            <h3>就业政策</h3>
+            <p>展示各行业的就业情况，帮助你了解不同行业的就业前景。</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 毕业生就业数据分析网站|广州航海学院 计科212 黄维</p>
+    </footer>
+    <!-- 模态框 1 -->
+    <div id="modalChart1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart1')">&times;</span>
+            <h2>就业薪资分布图</h2>
+            <iframe src="salary.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- 模态框 2 -->
+    <div id="modalChart2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart2')">&times;</span>
+            <h2>就业地区分布图</h2>
+            <iframe src="city.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- 模态框 3 -->
+    <div id="modalChart3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart3')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="degree.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 4 -->
+    <div id="modalChart4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart4')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="degree.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 5 -->
+    <div id="modalChart5" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart5')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="wordcloud.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 6 -->
+    <div id="modalChart6" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart6')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="wordcloud.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 7 -->
+    <div id="modalChart7" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart7')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="degree.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 8 -->
+    <div id="modalChart8" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart8')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="degree.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 9 -->
+    <div id="modalChart9" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart9')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="degree.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+     <!-- 模态框 10 -->
+    <div id="modalChart10" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modalChart10')">&times;</span>
+            <h2>学历要求分布图</h2>
+            <iframe src="degree.html" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    </div>
+    <script>
+        // 打开模态框
+        function openModal(chartId) {
+            document.getElementById(chartId).style.display = "block";
+        }
+
+        // 关闭模态框
+        function closeModal(chartId) {
+            document.getElementById(chartId).style.display = "none";
+        }
+    </script>
+</body>
+</html>
